@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messages App Logo</title>
+    <style>
+        /* General styling */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+        }
+
+        /* Green background (Messages app logo) */
+        .messages-logo {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            width: 50px;
+            height: 50px;
+            background: #0000FF;
+            border-radius: 50%;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .messages-logo.active {
+            transform: scale(1.5); /* Enlarge the logo when active */
+        }
+
+        /* Speech bubble in the middle */
+        .speech-bubble {
+            position: relative;
+            width: 30px;
+            height: 30px;
+            background: rgb(255, 255, 255);
+            border-radius: 50%;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .speech-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 30%;
+            width: 8px;
+            height: 8px;
+            background: white;
+            clip-path: polygon(0 0, 100% 0, 0 100%);
+        }
+
+        .speech-bubble2 {
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            background: #0000FF;
+            border-radius: 50%;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .speech-bubble2::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 32%;
+            width: 6px;
+            height: 8px;
+            background: #0000FF;
+            clip-path: polygon(0 0, 100% 0, 0 100%);
+        }
+
+        .question-mark-logo {
+            position: absolute; /* Fixed position to stay in the bottom right */
+            bottom: 10px; /* 10px from the bottom */
+            bottom: 16px;
+            right: 15px; /* Adjusted for spacing from messages logo */
+            width: 20px;
+            height: 20px;
+            background-color: #0000FF; /* Blue background */
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 16px; /* Adjust text size */
+            font-weight: bold;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        body.dark-mode {
+            background: #181818;
+            color: white;
+        }
+
+        #chatbox {
+            display: none; /* Initially hidden */
+            position: fixed;
+            bottom: 80px;
+            right: 10px;
+            width: 350px;
+            height: 500px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            transition: opacity 0.5s ease; /* Fade-in/fade-out effect */
+        }
+
+        body.dark-mode #chatbox {
+            background: #333;
+        }
+
+        /* Message container */
+        #messages {
+            flex-grow: 1;
+            margin-bottom: 20px;
+            padding-right: 10px;
+            overflow-y: auto; /* Enable scrolling */
+        }
+
+        /* Hide scrollbar in WebKit browsers (Chrome, Safari) */
+        #messages::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Hide scrollbar in Firefox */
+        #messages {
+            scrollbar-width: none; /* Firefox */
+        }
+
+        /* Hide scrollbar in IE and Edge */
+        #messages {
+            -ms-overflow-style: none; /* IE and Edge */
+        }
+
+        #messages div {
+            font-size: 16px;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 15px;
+            max-width: 80%;
+            word-wrap: break-word;
+            line-height: 1.5;
+        }
+
+        #messages .userMessage {
+            background: #007BFF;
+            color: white;
+            align-self: flex-end;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        #messages .botMessage {
+            background: #444;
+            color: white;
+            align-self: flex-start;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Input field container */
+        #userInput {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5px;
+            border-radius: 15px;
+            transition: background 0.3s, border 0.3s;
+            border: 2px solid #007BFF;
+            background: white;
+        }
+
+        body.dark-mode #userInput {
+            background: #444;
+            border: 2px solid #666;
+        }
+
+        #userInput input {
+            flex-grow: 1;
+            padding: 12px 15px;
+            font-size: 16px;
+            border: none;
+            outline: none;
+            background: white;
+            color: #333;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        body.dark-mode #userInput input {
+            background: #444;
+            color: white;
+        }
+
+        #userInput button {
+            padding: 12px 15px;
+            font-size: 16px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode #userInput button {
+            background-color: #0056b3;
+        }
+
+        #userInput button:hover {
+            background-color: #0056b3;
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="messages-logo" onclick="toggleChat()">
+        <div class="speech-bubble"></div>
+        <div class="speech-bubble2"></div>
+        <div class="question-mark-logo">
+            <div class="question-mark-logo-text">?</div>
+        </div>
+    </div>
+
+    <!-- Chatbot UI -->
+    <div id="chatbox">
+        <div id="messages"></div>
+        <div id="userInput">
+            <input type="text" id="userMessage" placeholder="Type a message..." />
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
+    <script>
+        function toggleChat() {
+            const chatbox = document.getElementById("chatbox");
+            const isVisible = chatbox.style.display === "flex";
+            if (isVisible) {
+                chatbox.style.opacity = 0;  
+                setTimeout(() => {
+                    chatbox.style.display = "none"; 
+                }, 500); 
+            } else {
+                chatbox.style.display = "flex";  
+                setTimeout(() => {
+                    chatbox.style.opacity = 1;  
+                }, 10);  
+            }
+        }
+        
+        function updateTheme() {
+            const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)").matches;
+            if (prefersDarkScheme) {
+                document.body.classList.add('dark-mode');
+            } else {
+                document.body.classList.remove('dark-mode');
+            }
+        }
+        window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", updateTheme);
+
+        updateTheme();
+        
+        function sendMessage() {
+            const userMessage = document.getElementById("userMessage").value;
+            if (userMessage) {
+                addMessageToChat("You: " + userMessage);
+                document.getElementById("userMessage").value = ""; 
+                const response = getResponse(userMessage);
+                setTimeout(() => {
+                    addMessageToChat("Bot: " + response);
+                }, 500);
+            }
+        }
+
+        function addMessageToChat(message) {
+            const messagesDiv = document.getElementById("messages");
+            const messageElement = document.createElement("div");
+            if (message.startsWith("You:")) {
+                messageElement.classList.add("userMessage");
+            } else {
+                messageElement.classList.add("botMessage");
+            }
+            messageElement.textContent = message;
+            messagesDiv.appendChild(messageElement);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        function getResponse(userMessage) {
+            const responseMap = {
+                "hi": "Hello! How can I assist you today?",
+                "help": "Sure! How can I help you?",
+                "order": "Please provide your order number to track it."
+            };
+
+
+            return responseMap[userMessage.toLowerCase()] || "Sorry, I didn't understand that. Can you ask me in a different way?";
+        }
+
+        document.getElementById("userMessage").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                sendMessage(); 
+            }
+        });
+
+        window.onload = () => {
+            addMessageToChat("Bot: Hello! How can I assist you today?");
+        };
+    </script>
+
+</body>
+</html>
