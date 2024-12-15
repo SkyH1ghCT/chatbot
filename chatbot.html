@@ -253,26 +253,22 @@
     </div>
 
     <script>
-        
-        // Toggle the chatbot visibility on logo click
         function toggleChat() {
             const chatbox = document.getElementById("chatbox");
             const isVisible = chatbox.style.display === "flex";
-            
             if (isVisible) {
-                chatbox.style.opacity = 0;  // Fade out
+                chatbox.style.opacity = 0;  
                 setTimeout(() => {
-                    chatbox.style.display = "none";  // Hide after fade out
-                }, 500);  // Match the fade-out time
+                    chatbox.style.display = "none"; 
+                }, 500); 
             } else {
-                chatbox.style.display = "flex";  // Show chatbot
+                chatbox.style.display = "flex";  
                 setTimeout(() => {
-                    chatbox.style.opacity = 1;  // Fade in
-                }, 10);  // Small delay for opacity transition
+                    chatbox.style.opacity = 1;  
+                }, 10);  
             }
         }
         
-        // Function to update the theme based on system settings
         function updateTheme() {
             const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)").matches;
             if (prefersDarkScheme) {
@@ -281,21 +277,15 @@
                 document.body.classList.remove('dark-mode');
             }
         }
-
-        // Listen for system theme changes
         window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", updateTheme);
 
-        // Initial theme setup
         updateTheme();
-
-        // Example function to simulate sending a message and bot's response
+        
         function sendMessage() {
             const userMessage = document.getElementById("userMessage").value;
             if (userMessage) {
                 addMessageToChat("You: " + userMessage);
-                document.getElementById("userMessage").value = ""; // Clear input box
-                
-                // Get the bot response after a delay
+                document.getElementById("userMessage").value = ""; 
                 const response = getResponse(userMessage);
                 setTimeout(() => {
                     addMessageToChat("Bot: " + response);
@@ -303,7 +293,6 @@
             }
         }
 
-        // Add message to chat
         function addMessageToChat(message) {
             const messagesDiv = document.getElementById("messages");
             const messageElement = document.createElement("div");
@@ -314,10 +303,9 @@
             }
             messageElement.textContent = message;
             messagesDiv.appendChild(messageElement);
-            messagesDiv.scrollTop = messagesDiv.scrollHeight; // Scroll to the bottom
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
         }
 
-        // Get a response from the bot based on user input
         function getResponse(userMessage) {
             const responseMap = {
                 "hi": "Hello! How can I assist you today?",
@@ -325,19 +313,17 @@
                 "order": "Please provide your order number to track it."
             };
 
-            // Default response if the message isn't matched
+
             return responseMap[userMessage.toLowerCase()] || "Sorry, I didn't understand that. Can you ask me in a different way?";
         }
 
-        // Add event listener for the Enter key to send the message
         document.getElementById("userMessage").addEventListener("keypress", function(event) {
             if (event.key === "Enter") {
                 event.preventDefault();
-                sendMessage(); // Call sendMessage when Enter is pressed
+                sendMessage(); 
             }
         });
 
-        // Welcome message on page load
         window.onload = () => {
             addMessageToChat("Bot: Hello! How can I assist you today?");
         };
